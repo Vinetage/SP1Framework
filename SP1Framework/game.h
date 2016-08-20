@@ -3,43 +3,39 @@
 
 #include "Framework\timer.h"
 
+//For other cpp
+#include "LoadMap.h"
+#include "PrintMap.h"
+#include "PushBox_Level.h"
+//#include "CollisionDetection.h"
+#include <fstream> //File opening
+#include <string>
+using namespace std;
+
+
 extern CStopWatch g_swTimer;
 extern bool g_bQuitGame;
-
-// struct to store keyboard events
-// a small subset of KEY_EVENT_RECORD
-struct SKeyEvent
-{
-    bool keyDown;
-    bool keyReleased;
-};
-
-// struct to store mouse events
-// a small subset of MOUSE_EVENT_RECORD
-struct SMouseEvent
-{
-    COORD mousePosition;
-    DWORD buttonState;
-    DWORD eventFlags;
-};
 
 // Enumeration to store the control keys that your game will have
 enum EKEYS
 {
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_ESCAPE,
-    K_SPACE,
-    K_COUNT
+	K_UP,
+	K_DOWN,
+	K_LEFT,
+	K_RIGHT,
+	K_ESCAPE,
+	K_SPACE,
+	K_ENTER,
+	K_COUNT //Put this last thx
 };
 
 // Enumeration for the different screen states
 enum EGAMESTATES
 {
     S_SPLASHSCREEN,
+	S_MAIN_MENU,
     S_GAME,
+	S_GAME2,
     S_COUNT
 };
 
@@ -50,6 +46,7 @@ struct SGameChar
     bool  m_bActive;
 };
 
+
 void init        ( void );      // initialize your variables, allocate memory, etc
 void getInput    ( void );      // get input from player
 void update      ( double dt ); // update the game and the state of the game
@@ -57,7 +54,7 @@ void render      ( void );      // renders the current state of the game to the 
 void shutdown    ( void );      // do clean up, free memory
 
 void splashScreenWait();    // waits for time to pass in splash screen
-void updateGame();          // gameplay logic
+void gameplay();            // gameplay logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
 void clearScreen();         // clears the current screen and draw from scratch 
@@ -67,14 +64,7 @@ void renderMap();           // renders the map to the buffer first
 void renderCharacter();     // renders the character into the buffer
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
-void renderInputEvents();   // renders the status of input events
 
-// keyboard and mouse input event managers
-void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent);  // define this function for the console to call when there are keyboard events
-void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent);      // define this function for the console to call when there are mouse events
-
-void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for gameplay 
-void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
-
+void renderMainMenu();      // renders the main menu
 
 #endif // _GAME_H
